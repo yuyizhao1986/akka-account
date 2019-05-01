@@ -1,0 +1,108 @@
+buildscript {
+    repositories {
+        mavenLocal()
+        maven { url "http://maven.aliyun.com/nexus/content/repositories/central" }
+        maven { url "http://repo1.maven.org/maven2/" }
+    }
+    dependencies {
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:2.1.4.RELEASE"
+    }
+}
+
+plugins {
+    id 'net.ltgt.apt' version '0.10'
+    id "com.github.spotbugs" version "1.6.10"
+}
+
+group 'com.ameba'
+version '1.0.0-SNAPSHOT'
+
+
+allprojects {
+    apply plugin: "eclipse"
+    apply plugin: "idea"
+    apply plugin: 'java'
+    apply plugin: "net.ltgt.apt"
+    apply plugin: "maven"
+    apply plugin: "maven-publish"
+    apply plugin: "io.spring.dependency-management"
+    apply plugin: 'checkstyle'
+    apply plugin: "com.github.spotbugs"
+
+    ext {
+        lombok = "1.18.2"
+        mapstruct = "1.2.0.Final"
+        akka = "2.5.22"
+        akka_scala = "2.9.3"
+        akka_kryo = "0.5.2"
+        akka_java = "0.9.0"
+        mybatis_spring = "1.3.2"
+        mybatis_pagehelper = "1.2.3"
+    }
+
+    compileJava {
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+    }
+
+    configurations.all {
+        resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+        resolutionStrategy.cacheDynamicVersionsFor 0, 'seconds'
+    }
+
+    repositories {
+        mavenLocal()
+        maven { url "http://maven.aliyun.com/nexus/content/repositories/central" }
+        maven { url "http://repo1.maven.org/maven2/" }
+    }
+
+    dependencyManagement {
+        imports {
+            mavenBom 'io.spring.platform:platform-bom:Cairo-SR8'
+        }
+    }
+
+    checkstyle {
+        toolVersion = '7.1.1'
+        ignoreFailures = false
+        configFile = file("${rootDir}/config/CheckStyle.xml")
+        sourceSets = [project.sourceSets.main]
+    }
+
+    spotbugs {
+        toolVersion = '3.1.12'
+        ignoreFailures = false
+        effort = "min"
+        reportLevel = "high"
+        sourceSets = [project.sourceSets.main]
+    }
+
+    tasks.withType(com.github.spotbugs.SpotBugsTask) {
+        reports {
+            xml.enabled = false
+            html.enabled = true
+        }
+    }
+
+    dependencies {
+        compile "org.projectlombok:lombok:${lombok}",
+                "org.mapstruct:mapstruct-processor:${mapstruct}"
+        annotationProcessor "org.projectlombok:lombok:${lombok}",
+                "org.mapstruct:mapstruct-processor:${mapstruct}"
+
+        compile "org.mapstruct:mapstruct-jdk8:${mapstruct}"
+
+        testAnnotationProcessor "org.projectlombok:lombok:${lombok}",
+                "org.mapstruct:mapstruct-processor:${mapstruct}"
+
+        testCompile("org.spri" +
+                "ngframework.boot:spring-boot-starter-test") {
+            exclude group: 'junit'
+        }
+        testCompile "org.testng:testng"
+        testCompile "org.awaitility:awaitility:2.0.0"
+    }
+
+}
+
+

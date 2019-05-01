@@ -1,0 +1,13 @@
+server:
+  servlet:
+    contextPath: /account
+  port: 9999
+  minThreads: 4
+  maxThreads: 40
+
+account:
+  dsDriverClass: com.mysql.jdbc.Driver
+  dsMaxActive: 20
+  dsUrl: jdbc:mysql://localhost:3306/akka_account?useUnicode=true&characterEncoding=UTF8&zeroDateTimeBehavior=convertToNull
+  dsUserName: akka_account
+  dsPassword: akka_account

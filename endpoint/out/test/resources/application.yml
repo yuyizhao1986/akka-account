@@ -1,0 +1,23 @@
+server:
+  servlet:
+    contextPath: /ameba
+  port: 9999
+  minThreads: 4
+  maxThreads: 40
+core:
+  dsDriverClass: com.mysql.jdbc.Driver
+  dsMaxActive: 20
+  dsUrl: jdbc:mysql://localhost:3306/core?useUnicode=true&characterEncoding=UTF8&zeroDateTimeBehavior=convertToNull
+  dsUserName: ameba
+  dsPassword: Qwer1234
+
+account:
+  dsDriverClass: com.mysql.jdbc.Driver
+  dsMaxActive: 20
+  dsUrl: jdbc:mysql://localhost:3306/account?useUnicode=true&characterEncoding=UTF8&zeroDateTimeBehavior=convertToNull
+  dsUserName: ameba
+  dsPassword: Qwer1234
+mq:
+  server: 127.0.0.1:9876
+  producer:
+    group: ameba

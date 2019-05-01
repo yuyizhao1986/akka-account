@@ -1,0 +1,4 @@
+rootProject.name = 'account-akka'
+include 'core'
+include 'account'
+include 'endpoint'
